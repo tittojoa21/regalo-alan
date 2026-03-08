@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
       subtitle: 'Feliz primer cumple juntos',
       emojis: '🤍🥳',
       foto: 'alan1.jpeg',
-      fotoAlt: 'Nuestro primer encuentro',
       objectPosition: 'center 40%' // Centrado un poco más arriba
     },
     { // 2: Historia
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     { // 15: Cierre con collage
       type: 'cierre',
-      title: '# Cinco meses JUNTOS',
+      title: '# Feliz Cumpleaños',
       footer: 'Cada palabra es un hilo que teje la historia que quiero construir con vos.',
       fotos: [
         { file: 'alan2.jpeg', position: 'center 40%' },
