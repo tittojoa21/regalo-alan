@@ -1,0 +1,677 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(145deg, #d0ecc0 0%, #ccb8f0 100%);
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y pinch-zoom;
+}
+
+/* Barra de progreso con efecto de onda */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: rgba(180, 150, 220, 0.15);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #9fd48c, #c4a5ff, #ffb5c0);
+  border-radius: 0 4px 4px 0;
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 20px #b8f0a0;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: progressWave 2s infinite;
+}
+
+@keyframes progressWave {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Contador de tarjetas con diseño premium */
+.card-counter {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a3a1a;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 25px rgba(100, 70, 150, 0.25);
+  animation: counterGlow 3s infinite;
+}
+
+@keyframes counterGlow {
+  0%, 100% { box-shadow: 0 8px 25px rgba(100, 70, 150, 0.25); }
+  50% { box-shadow: 0 8px 35px rgba(150, 100, 220, 0.5); }
+}
+
+/* Contenedor de tarjetas con perspectiva 3D */
+.cards-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  perspective: 2000px;
+}
+
+/* Tarjeta base con diseño ultra premium */
+.card {
+  position: absolute;
+  width: 92%;
+  max-width: 440px;
+  height: 80vh;
+  max-height: 760px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  border-radius: 48px;
+  padding: 2rem 1.8rem;
+  box-shadow: 
+    0 30px 50px -20px rgba(60, 30, 100, 0.5),
+    inset 0 2px 10px rgba(255, 255, 255, 0.9),
+    0 0 0 2px rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y pinch-zoom;
+  will-change: transform, opacity;
+  transition: box-shadow 0.4s ease;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Efecto de brillo en los bordes */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, #b8e0a8, #d6b8ff, #ffb8d6, #b8e0a8);
+  border-radius: 52px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: blur(8px);
+  background-size: 300% 300%;
+  animation: borderGradient 6s ease infinite;
+}
+
+.card-0::before {
+  opacity: 0.7;
+}
+
+@keyframes borderGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Posiciones de las tarjetas con curvas más suaves */
+.card-0 {
+  transform: translateY(0) scale(1) rotate(0deg);
+  z-index: 30;
+  opacity: 1;
+  pointer-events: auto;
+  animation: cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.3deg); }
+}
+
+.card-1 {
+  transform: translateY(10px) scale(0.96) rotate(1.2deg);
+  z-index: 20;
+  opacity: 0.65;
+  pointer-events: none;
+  filter: blur(0.5px);
+  transition: all 0.3s ease;
+}
+
+.card-2 {
+  transform: translateY(20px) scale(0.92) rotate(2.4deg);
+  z-index: 10;
+  opacity: 0.35;
+  pointer-events: none;
+  filter: blur(1.2px);
+  transition: all 0.3s ease;
+}
+
+.card:not(.card-0):not(.card-1):not(.card-2) {
+  display: none;
+}
+
+/* Scroll personalizado elegante */
+.card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card::-webkit-scrollbar-track {
+  background: rgba(220, 200, 240, 0.2);
+  border-radius: 30px;
+  margin: 10px 0;
+}
+
+.card::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #b8a0d8, #a0d4a0);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.5);
+}
+
+/* Hint de deslizamiento con diseño elegante */
+.swipe-hint {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  padding: 12px 30px;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #1f331f;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  z-index: 900;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  animation: hintPulse 2.5s infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+  50% { transform: translateX(-50%) scale(1.03); box-shadow: 0 15px 40px rgba(100, 70, 150, 0.25); }
+}
+
+.swipe-hint i {
+  font-size: 1rem;
+  animation: arrowSlide 1.8s infinite;
+}
+
+.swipe-hint i:first-child {
+  animation: arrowLeft 1.8s infinite;
+}
+
+.swipe-hint i:last-child {
+  animation: arrowRight 1.8s infinite;
+}
+
+@keyframes arrowLeft {
+  0%, 100% { transform: translateX(0); opacity: 0.7; }
+  50% { transform: translateX(-8px); opacity: 1; }
+}
+
+@keyframes arrowRight {
+  0%, 100% { transform: translateX(0); opacity: 0.7; }
+  50% { transform: translateX(8px); opacity: 1; }
+}
+
+/* Botón reiniciar con efecto 3D */
+.btn-reiniciar {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  border: 2px solid white;
+  padding: 16px 40px;
+  border-radius: 70px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a3a1a;
+  cursor: pointer;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 15px 35px rgba(100, 70, 150, 0.4);
+  animation: buttonAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes buttonAppear {
+  0% { transform: translateX(-50%) scale(0); opacity: 0; }
+  70% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+.btn-reiniciar:active {
+  transform: translateX(-50%) scale(0.96);
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 25px rgba(100, 70, 150, 0.5);
+}
+
+.btn-reiniciar i {
+  font-size: 1.2rem;
+  animation: spinSlow 3s infinite linear;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== ESTILOS DE CONTENIDO PREMIUM ===== */
+
+/* Contenedor de fotos - PERFECTAMENTE INTEGRADO */
+.foto-container {
+  width: 100%;
+  height: 240px;
+  border-radius: 32px;
+  overflow: hidden;
+  margin: 1rem 0;
+  position: relative;
+  box-shadow: 0 20px 35px -12px rgba(0,0,0,0.25);
+  border: 4px solid white;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+.foto-container:hover {
+  transform: scale(1.02) translateY(-4px);
+  box-shadow: 0 25px 45px -12px rgba(100, 60, 150, 0.4);
+}
+
+/* MÉTODO PERFECTO PARA IMÁGENES - SIN CORTES */
+.foto-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cambiado a cover para llenar el espacio */
+  object-position: center 30%; /* Centrado perfecto, ajustable por tipo de foto */
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* Overlay elegante */
+.foto-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5) 80%);
+  color: white;
+  padding: 30px 20px 15px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.foto-container:hover .foto-overlay {
+  opacity: 1;
+}
+
+.foto-container:hover img {
+  transform: scale(1.08);
+}
+
+/* Grid de fotos para collages perfectos */
+.fotos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 1.2rem 0;
+}
+
+.foto-grid-item {
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 3px solid white;
+  box-shadow: 0 12px 25px -8px rgba(0,0,0,0.2);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.foto-grid-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.foto-grid-item:hover {
+  transform: scale(1.03) translateY(-5px);
+  box-shadow: 0 18px 35px -8px rgba(100, 70, 150, 0.4);
+}
+
+.foto-grid-item:hover::after {
+  opacity: 1;
+}
+
+.foto-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.foto-grid-item:hover img {
+  transform: scale(1.1);
+}
+
+/* Títulos con estilo */
+.card h2 {
+  font-size: 2rem;
+  color: #1a331a;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 3px solid #dac0ff;
+  padding-bottom: 0.8rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 6px rgba(255,255,255,0.5);
+  position: relative;
+}
+
+.card h2 i {
+  color: #9a77c2;
+  font-size: 2rem;
+  filter: drop-shadow(0 4px 4px rgba(150,100,200,0.3));
+  animation: iconPop 3s infinite;
+}
+
+@keyframes iconPop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); filter: drop-shadow(0 6px 8px rgba(150,100,200,0.5)); }
+}
+
+/* Badge de fecha con efecto premium */
+.fecha-badge {
+  background: linear-gradient(135deg, #d0ecbe, #e0ccff);
+  border: 3px solid white;
+  padding: 0.7rem 1.8rem;
+  border-radius: 60px;
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f2a0f;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 0 #80a06c, 0 10px 20px rgba(0,0,0,0.1);
+  animation: badgeShine 3s infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes badgeShine {
+  0%, 100% { box-shadow: 0 6px 0 #80a06c, 0 10px 20px rgba(0,0,0,0.1); }
+  50% { box-shadow: 0 6px 0 #80a06c, 0 15px 30px rgba(150,100,200,0.3); }
+}
+
+/* Frase destacada con comillas elegantes */
+.frase-destacada {
+  font-size: 1.45rem;
+  line-height: 1.5;
+  color: #251a35;
+  background: linear-gradient(145deg, #fafff0, #fdf0ff);
+  padding: 1.6rem;
+  border-radius: 32px;
+  margin: 1rem 0;
+  border: 2px solid #d8f0c6;
+  font-style: italic;
+  box-shadow: inset 0 2px 8px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.frase-destacada::before {
+  content: '“';
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  font-size: 6rem;
+  color: rgba(180, 150, 220, 0.15);
+  font-family: 'Times New Roman', serif;
+}
+
+.frase-destacada::after {
+  content: '”';
+  position: absolute;
+  bottom: -30px;
+  right: 10px;
+  font-size: 6rem;
+  color: rgba(180, 150, 220, 0.15);
+  font-family: 'Times New Roman', serif;
+}
+
+/* Texto historia con fondo suave */
+.texto-historia {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #1a2f1a;
+  background: rgba(240, 255, 230, 0.6);
+  padding: 1.4rem;
+  border-radius: 28px;
+  margin: 0.8rem 0;
+  border: 1px solid #d0ecbe;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.8);
+}
+
+/* Razones grid con animación secuencial */
+.razones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  margin: 1.5rem 0;
+}
+
+.razon-item {
+  background: linear-gradient(135deg, #f2ffe6, #f2e6ff);
+  border: 2px solid #dac0ff;
+  border-radius: 60px;
+  padding: 1rem 1.2rem;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1a331a;
+  font-weight: 600;
+  box-shadow: 0 4px 0 #98b884, 0 5px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: reasonSlide 0.6s both;
+  transform-origin: left;
+}
+
+@keyframes reasonSlide {
+  0% { transform: translateX(-30px) scale(0.8); opacity: 0; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.razon-item:nth-child(1) { animation-delay: 0.1s; }
+.razon-item:nth-child(2) { animation-delay: 0.2s; }
+.razon-item:nth-child(3) { animation-delay: 0.3s; }
+.razon-item:nth-child(4) { animation-delay: 0.4s; }
+.razon-item:nth-child(5) { animation-delay: 0.5s; }
+.razon-item:nth-child(6) { animation-delay: 0.6s; }
+.razon-item:nth-child(7) { animation-delay: 0.7s; }
+
+.razon-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 0 #98b884, 0 12px 25px rgba(150,100,200,0.2);
+  background: linear-gradient(135deg, #f8fff0, #f8f0ff);
+}
+
+.razon-item i {
+  color: #9a77c2;
+  font-size: 1.2rem;
+  animation: heartBeat 2s infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); color: #ff6b9d; }
+  40% { transform: scale(1); }
+}
+
+/* Infinito especial con efecto flotante */
+.infinito-especial {
+  background: linear-gradient(135deg, #d4f0c0, #f0e0ff);
+  border: 4px solid white;
+  border-radius: 100px;
+  padding: 1.2rem 2.2rem;
+  font-size: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  margin: 1.2rem 0;
+  box-shadow: 0 10px 0 #80a06c, 0 15px 30px rgba(0,0,0,0.1);
+  animation: floatSpecial 3s infinite ease-in-out;
+}
+
+@keyframes floatSpecial {
+  0%, 100% { transform: translateY(0) rotate(0deg); box-shadow: 0 10px 0 #80a06c, 0 15px 30px rgba(0,0,0,0.1); }
+  50% { transform: translateY(-8px) rotate(1deg); box-shadow: 0 15px 0 #80a06c, 0 20px 40px rgba(150,100,200,0.2); }
+}
+
+/* Calendario con diseño premium */
+.mini-calendario {
+  background: rgba(245, 240, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 32px;
+  padding: 1.8rem;
+  border: 3px solid rgba(220, 245, 200, 0.8);
+  margin: 1.2rem 0;
+  box-shadow: 0 15px 30px -10px rgba(0,0,0,0.15);
+}
+
+.grid-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.dia-calendario {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #e8dcff, #f4ecff);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a331a;
+  border: 1px solid #d0ecbe;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.dia-calendario:hover {
+  transform: scale(1.1);
+  background: #dac0ff;
+  box-shadow: 0 0 20px #c4a5ff;
+  border-color: white;
+}
+
+.dia-calendario.vacio {
+  background: transparent;
+  border: 1px dashed #b5a8cc;
+  opacity: 0.4;
+}
+
+/* Responsive perfecto */
+@media (max-width: 480px) {
+  .card {
+    width: 94%;
+    padding: 1.5rem;
+  }
+  
+  .card h2 {
+    font-size: 1.8rem;
+  }
+  
+  .razones-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .foto-container {
+    height: 200px;
+  }
+  
+  .fotos-grid {
+    gap: 10px;
+  }
+  
+  .foto-grid-item {
+    border-radius: 18px;
+  }
+  
+  .frase-destacada {
+    font-size: 1.3rem;
+    padding: 1.4rem;
+  }
+}
+
+/* Animaciones adicionales */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-bg {
+  background: linear-gradient(-45deg, #d8f0c8, #e0d0ff, #c8e8ff, #ffd0e8);
+  background-size: 400% 400%;
+  animation: gradientFlow 12s ease infinite;
+}
